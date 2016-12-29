@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+
+<body>
+  <section id="no-ACAO">
+    <h1>Fails if Access-Control-Allow-Origin Not Set</h1>
+    <button>Click to Send XHR</button>
+  </section>
+
+  <section id="wildcard-ACAO">
+    <h1>Success if Access-Control-Allow-Origin Set to Wildcard</h1>
+    <button>Click to Send XHR</button>
+  </section>
+
+  <section id="wildcard-ACAO-with-credentials">
+    <h1>Fails to Send Cookie when Access-Control-Allow-Origin set to Wildcard</h1>
+    <button>Click to Send XHR</button>
+  </section>
+  <section id="no-ACAC-with-credentials">
+    <h1>Fails when Access-Control-Allow-Credentials Not Set</h1>
+    <button>Click to send XHR</button>
+  </section>
+
+  <section id="specific-ACAO-with-credentials">
+    <h1>Success to Send Cookie when Access-Control-Allow-Origin set specificly</h1>
+    <button>Click to Send XHR</button>
+  </section>
+
+  <section id="redirect">
+    <h1>Origin Loss after Redirect</h1>
+    <button>Click to Send XHR</button>
+  </section>
+
+  <script>
+    click('#no-ACAO button', function() {
+      var xhr = createXHR('http://dest.com:4001/access-control-allow-origin-not-set');
+      xhr.send();
+    });
+
+    click('#wildcard-ACAO button', function() {
+      var xhr = createXHR('http://dest.com:4001/access-control-allow-origin-wildcard');
+      xhr.send();
+    });
+
+    click('#redirect', function() {
+      var xhr = createXHR('http://mid.com:4001/redirect');
+      xhr.send();
+    });
+
+    click('#wildcard-ACAO-with-credentials', function() {
+      document.cookie = 'auhtor:harttle';
+      var xhr = createXHR('http://dest.com:4001/wildcard-allow-origin-with-credentials');
+      xhr.withCredentials = true;
+      xhr.send();
+    });
+
+    click('#no-ACAC-with-credentials', function() {
+      document.cookie = 'auhtor:harttle';
+      var xhr = createXHR('http://dest.com:4001/allow-credentials-not-set');
+      xhr.withCredentials = true;
+      xhr.send();
+    });
+
+    click('#specific-ACAO-with-credentials', function() {
+      document.cookie = 'auhtor:harttle';
+      var xhr = createXHR('http://dest.com:4001/specific-allow-origin-with-credentials');
+      xhr.withCredentials = true;
+      xhr.send();
+    });
+
+    function click(sel, func) {
+      var el = document.querySelector(sel);
+      el.addEventListener('click', func);
+    }
+
+    function createXHR(url) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState != 4) return;
+        var msg = 'status:' + xhr.status + ' body:' + xhr.responseText;
+        console.log(msg);
+        alert(msg);
+      };
+      return xhr;
+    }
+  </script>
+</body>
+
+</html>

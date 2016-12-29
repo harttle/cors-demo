@@ -1,0 +1,22 @@
+{
+  "name": "cors-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harttle/cors-demo.git"
+  },
+  "author": "harttle <yangjvn@126.com>",
+  "license": "GPLv2",
+  "bugs": {
+    "url": "https://github.com/harttle/cors-demo/issues"
+  },
+  "homepage": "https://github.com/harttle/cors-demo#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
