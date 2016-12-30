@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/harttle/cors-demo#readme",
   "dependencies": {
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "on-headers": "^1.0.1"
   }
 }
