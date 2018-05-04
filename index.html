@@ -85,21 +85,21 @@
     });
 
     click('#wildcard-ACAO-with-credentials button', function() {
-      document.cookie = 'auhtor:harttle';
+      document.cookie = 'author=harttle';
       var xhr = createXHR('http://dest.com:4001/wildcard-allow-origin-with-credentials');
       xhr.withCredentials = true;
       xhr.send();
     });
 
     click('#no-ACAC-with-credentials button', function() {
-      document.cookie = 'auhtor:harttle';
+      document.cookie = 'author=harttle';
       var xhr = createXHR('http://dest.com:4001/allow-credentials-not-set');
       xhr.withCredentials = true;
       xhr.send();
     });
 
     click('#specific-ACAO-with-credentials button', function() {
-      document.cookie = 'auhtor:harttle';
+      document.cookie = 'author=harttle';
       var xhr = createXHR('http://dest.com:4001/specific-allow-origin-with-credentials');
       xhr.withCredentials = true;
       xhr.send();
