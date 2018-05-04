@@ -61,7 +61,7 @@ app.get('/allow-credentials-not-set', (req, res) => {
 
 app.get('/specific-allow-origin-with-credentials', (req, res) => {
     res.set({
-        'Access-Control-Allow-Origin': 'http://index.com:4001',
+        'Access-Control-Allow-Origin': 'http://localhost:4001',
         'Access-Control-Allow-Credentials': true
     });
     res.status(200).end('I got your cookie: ' + req.headers.cookie);
@@ -69,8 +69,8 @@ app.get('/specific-allow-origin-with-credentials', (req, res) => {
 
 app.get('/redirect-to-redirect', (req, res) => {
     res.set({
-        'Access-Control-Allow-Origin': 'http://index.com:4001',
-        'Location': 'http://index.com:4001/redirect'
+        'Access-Control-Allow-Origin': 'http://localhost:4001',
+        'Location': 'http://localhost:4001/redirect'
     });
     res.status(303).end(); 
 });
@@ -78,7 +78,7 @@ app.get('/redirect-to-redirect', (req, res) => {
 app.get('/redirect', (req, res) => {
     res.set({
         'Access-Control-Allow-Origin': '*',
-        'Location': 'http://index.com:4001/access-control-allow-origin-wildcard',
+        'Location': 'http://localhost:4001/access-control-allow-origin-wildcard',
         'Access-Control-Allow-Headers': 'x-foo, DNT'
     });
     res.status(303).end(); 
@@ -93,12 +93,8 @@ app.options('/redirect', (req, res) => {
 });
 
 app.listen(4001, () => console.log('listening to 4001'));
+app.listen(4002, () => console.log('listening to 4002'));
+app.listen(4003, () => console.log('listening to 4003'));
 
-console.log('Put these into your /etc/hosts:');
-console.log();
-console.log('127.0.0.1 index.com');
-console.log('127.0.0.1 mid.com');
-console.log('127.0.0.1 dest.com');
-console.log();
-console.log('Open http://index.com');
+console.log('Open http://localhost:4001');
 console.log();

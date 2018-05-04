@@ -41,68 +41,81 @@
     <button>Click to Send XHR</button>
   </section>
 
-  <section id="redirect-non-simple-req">
-    <h1>Redirect Non-Simple Request </h1>
-    <button>Click to Send XHR</button>
-  </section>
-
   <section id="redirect-simple-req-twice">
     <h1>Redirect Simple Request Twice</h1>
     <button>Click to Send XHR</button>
   </section>
 
+  <section id="redirect-non-simple-req">
+    <h1>Redirect Non-Simple Request </h1>
+    <button>Click to Send XHR</button>
+  </section>
+
   <script>
+    click('#no-ACAO button', function() {
+      console.log('SENDING XHR: no Access-Control-Allow-Origin set, your browser may show you an error');
+      var xhr = createXHR('http://localhost:4002/access-control-allow-origin-not-set');
+      xhr.send();
+    });
+
+    click('#wildcard-ACAO button', function() {
+      console.log('SENDING XHR: Access-Control-Allow-Origin set to *, it should be a success');
+      var xhr = createXHR('http://localhost:4002/access-control-allow-origin-wildcard');
+      xhr.send();
+    });
+
     click('#non-simple-request', function() {
-      var xhr = createXHR('http://mid.com:4001/access-control-allow-origin-wildcard');
-      xhr.setRequestHeader('x-foo', 'bar');
-      xhr.send();
-    });
-
-    click('#redirect-simple-req-twice', function() {
-      var xhr = createXHR('http://mid.com:4001/redirect-to-redirect');
-      xhr.send();
-    });
-
-    click('#redirect-non-simple-req', function() {
-      var xhr = createXHR('http://mid.com:4001/redirect');
+      console.log('SENDING XHR: custom header x-foo set, which makes the request non-simple, you\'ll see an additional OPTIONS request in the Network panel');
+      var xhr = createXHR('http://localhost:4002/access-control-allow-origin-wildcard');
       xhr.setRequestHeader('x-foo', 'bar');
       xhr.send();
     });
 
     click('#redirect-simple-req button', function() {
-      var xhr = createXHR('http://mid.com:4001/redirect');
+      console.log('SENDING XHR: this simple request will be redirected, and should be successful');
+      var xhr = createXHR('http://localhost:4002/redirect');
       xhr.send();
     });
 
-    click('#no-ACAO button', function() {
-      var xhr = createXHR('http://dest.com:4001/access-control-allow-origin-not-set');
+    click('#redirect-simple-req-twice', function() {
+      console.log('SENDING XHR: this simple request will be redirected twice, and should be successful');
+      var xhr = createXHR('http://localhost:4002/redirect-to-redirect');
       xhr.send();
     });
 
-    click('#wildcard-ACAO button', function() {
-      var xhr = createXHR('http://dest.com:4001/access-control-allow-origin-wildcard');
+    click('#redirect-non-simple-req', function() {
+      console.log('SENDING XHR: this non simple request will be redirected (respond with 302), thus should be failed');
+      var xhr = createXHR('http://localhost:4002/redirect');
+      xhr.setRequestHeader('x-foo', 'bar');
       xhr.send();
     });
 
     click('#wildcard-ACAO-with-credentials button', function() {
+      console.log('SENDING XHR: Access-Control-Allow-Origin set to *, which is not acceptable for your browser');
       document.cookie = 'author=harttle';
-      var xhr = createXHR('http://dest.com:4001/wildcard-allow-origin-with-credentials');
+      var xhr = createXHR('http://localhost:4002/wildcard-allow-origin-with-credentials');
       xhr.withCredentials = true;
       xhr.send();
     });
 
     click('#no-ACAC-with-credentials button', function() {
+      console.log('SENDING XHR: Access-Control-Allow-Credentials not set, it shall fail');
       document.cookie = 'author=harttle';
-      var xhr = createXHR('http://dest.com:4001/allow-credentials-not-set');
+      var xhr = createXHR('http://localhost:4002/allow-credentials-not-set');
       xhr.withCredentials = true;
       xhr.send();
     });
 
     click('#specific-ACAO-with-credentials button', function() {
+      console.log('SENDING XHR: Access-Control-Allow-Credentials set, and Access-Control-Allow-Origin set to localhost:4001, it should be a sucess');
       document.cookie = 'author=harttle';
-      var xhr = createXHR('http://dest.com:4001/specific-allow-origin-with-credentials');
+      console.log('cookie `author=harttle` set, sending xhr...');
+
+      var xhr = createXHR('http://localhost:4002/specific-allow-origin-with-credentials');
       xhr.withCredentials = true;
       xhr.send();
+
+      console.log('Historically, cookies for a given host are shared across all the ports on that host, See: https://stackoverflow.com/questions/1612177/are-http-cookies-port-specific');
     });
 
 
@@ -116,8 +129,7 @@
       xhr.open('GET', url);
       xhr.onreadystatechange = function() {
         if (xhr.readyState != 4) return;
-        var msg = 'status:' + xhr.status + ' body:' + xhr.responseText;
-        console.log(msg);
+        console.log('SERVER RESPONSE:', xhr.status, xhr.responseText);
       };
       return xhr;
     }
