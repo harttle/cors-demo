@@ -1,16 +1,11 @@
 # cors-demo
 Demo server/client for CORS cookies, preflights and redirects.
 
-## Install
+## Get Running
 
-1. Clone this repo
-2. `npm run install`
-
-## Run
-
-1. `node server.js`
-2. Edit your Host file according to the promotion.
-3. Open the given URL with your favorite browser.
+1. `npm run install`
+2. `npm start`
+3. Open the given URL.
 
 ## Tutorials
 
